@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AccountApplication2.Models
+{
+    internal class AccountManager
+    {
+        public List<AccountPerson> personsList { get; set; }
+        public static string sfilePath = @"C:\TextFolder\DataBase4.txt";
+
+        public AccountManager() 
+        {
+            personsList = new List<AccountPerson>();//list new assigned
+
+        }
+
+        public void CreateAccount(string accountName,string bankName,int balance)
+        {
+           //2 class accountPerson details store new object created and passed to stream write file
+           AccountPerson accountPerson= new AccountPerson { AccountName = accountName, BankName = bankName, Balance = balance };
+            StreamFile.StreamWriteFunction(accountPerson ,sfilePath);
+        }
+
+        public int DepositAmount(int dataa)
+        {
+            AccountPerson accountDeposite = personsList.Find(AccountPerson => AccountPerson.Balance == AccountPerson.Balance);
+            if (accountDeposite != null)
+            {
+                // Assign the balance to the 'data' out parameter
+                accountDeposite.Balance=accountDeposite.Balance+dataa;
+            }
+           return dataa;
+        }
+
+    
+       
+        public void WidrowAmount(int widrowAmount, out string feedBack)
+        {
+            AccountPerson amountWidrow = personsList.Find(AccountPerson => AccountPerson.Balance == AccountPerson.Balance);
+            if (amountWidrow != null)
+            {
+
+                int checkBalance = amountWidrow.Balance - widrowAmount;
+                if (checkBalance > 500)
+                {
+                    amountWidrow.Balance = amountWidrow.Balance - widrowAmount;
+                    feedBack = $"sucess Balance{amountWidrow.Balance}";
+                    return;
+                }
+
+              
+            }
+            feedBack = "cannot widrow insufficent balance";
+        }
+
+        //4.3 list added read data by this function
+        internal void ListCreated(AccountPerson readFileObj)
+        {
+            personsList.Add(readFileObj);
+        }
+
+        internal void SavingFile()
+        {
+            AccountPerson accountDeposite = personsList.Find(AccountPerson => AccountPerson.Balance == AccountPerson.Balance);
+            if (accountDeposite != null)
+            {
+                // Assign the balance to the 'data' out parameter
+                AccountPerson accountPerson = new AccountPerson {AccountName= accountDeposite.AccountName,BankName= accountDeposite.BankName,Balance= accountDeposite.Balance };
+                StreamFile.StreamWriteFunction(accountPerson, sfilePath);
+            }
+
+        }
+    }
+}
