@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccountApplication2.InsufficientBalance;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,8 +46,10 @@ namespace AccountApplication2.Models
                 {
                     Console.WriteLine();
                     //3 read file  function called path given and file data stored in Account person variable 
-                   AccountPerson readFileObj= StreamFile.StreamWriteFunction(filePath);
+                  AccountPerson readFileObj =  accountManager.ReadFilePass();
                     //4.checking file exist print welcome back
+
+
                     if (readFileObj != null)
                     {
                         Console.WriteLine("Welcome Back " + readFileObj.AccountName + "\n" + readFileObj.BankName+ 
@@ -69,14 +72,26 @@ namespace AccountApplication2.Models
                                     int depositeAmount = Convert.ToInt32(Console.ReadLine());
                                     accountManager.DepositAmount(depositeAmount);
                                     Console.WriteLine("Add succes :"+depositeAmount+" to Your account");
+                                    accountManager.SavingFile();
                                     // accountManager.DepositAmount( readFileObj, out amount);
                                     break;
                                 case 2:
                                     Console.WriteLine("Enter the amount to Widraw");
                                     int widrowAmount = Convert.ToInt16(Console.ReadLine());
                                     string feedBack;
-                                    accountManager.WidrowAmount(widrowAmount,out feedBack);
-                                    Console.WriteLine(feedBack);
+                                    try
+                                    {
+                                        
+                                        accountManager.WidrowAmount(widrowAmount, out feedBack);
+                                        Console.WriteLine(feedBack);
+                                        accountManager.SavingFile();
+                                    }
+                                    catch(InsufficentBalanceException be)
+                                    {
+                                        Console.WriteLine(be.Message);
+                                    }
+                                    
+
 
                                     break;
                                 case 3:

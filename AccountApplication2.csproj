@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InsufficientBalance\InsufficentBalanceException.cs" />
     <Compile Include="Models\AccountControler.cs" />
     <Compile Include="Models\AccountManager.cs" />
     <Compile Include="Models\AccountPerson.cs" />

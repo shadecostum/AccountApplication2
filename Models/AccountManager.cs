@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccountApplication2.InsufficientBalance;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace AccountApplication2.Models
     internal class AccountManager
     {
         public List<AccountPerson> personsList { get; set; }
-        public static string sfilePath = @"C:\TextFolder\DataBase4.txt";
+        public static string sfilePath = @"C:\TextFolder\DataBase5.txt";
 
         public AccountManager() 
         {
@@ -23,6 +24,13 @@ namespace AccountApplication2.Models
            //2 class accountPerson details store new object created and passed to stream write file
            AccountPerson accountPerson= new AccountPerson { AccountName = accountName, BankName = bankName, Balance = balance };
             StreamFile.StreamWriteFunction(accountPerson ,sfilePath);
+        }
+
+        public AccountPerson ReadFilePass()
+        {
+            AccountPerson readFileObj = StreamFile.StreamWriteFunction(sfilePath);
+
+            return readFileObj;
         }
 
         public int DepositAmount(int dataa)
@@ -54,7 +62,7 @@ namespace AccountApplication2.Models
 
               
             }
-            feedBack = "cannot widrow insufficent balance";
+            throw new InsufficentBalanceException("Minimum balance amount 500");
         }
 
         //4.3 list added read data by this function
